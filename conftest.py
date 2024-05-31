@@ -1,8 +1,7 @@
 import pytest
-import requests
-from const import Const
-from data import DataForTest
 
+from data import DataForTest
+from helpers import *
 
 @pytest.fixture(scope='function')
 def create_order():
@@ -12,8 +11,8 @@ def create_order():
 
 
 @pytest.fixture(scope='function')
-def create_courier(helpers):
-    data = helpers.register_new_courier_and_return_login_password()
+def create_courier():
+    data = register_new_courier_and_return_login_password()
     response_post = requests.post(Const.LOGIN_COURIER, data={
         "login": data[0],
         "password": data[1],
