@@ -5,29 +5,27 @@ import string
 from const import Const
 
 
-class Helpers:
     # метод генерирует строку, состоящую только из букв нижнего регистра, в качестве параметра передаём длину строки
-    @staticmethod
     def generate_random_string(length):
         letters = string.ascii_lowercase
         random_string = ''.join(random.choice(letters) for i in range(length))
         return random_string
 
     # метод генерирует строки логина, пароля и имени
-    def generate_data(self):
-        login = self.generate_random_string(10)
-        password = self.generate_random_string(10)
-        first_name = self.generate_random_string(10)
+    def generate_data():
+        login = generate_random_string(10)
+        password = generate_random_string(10)
+        first_name = generate_random_string(10)
         return login, password, first_name
 
     # метод создает и авторизирует курьера
     @allure.step('Создаем курьера и получаем логин, пароль и имя')
-    def register_new_courier_and_return_login_password(self):
+    def register_new_courier_and_return_login_password():
         login_pass = []
 
-        login = self.generate_random_string(10)
-        password = self.generate_random_string(10)
-        first_name = self.generate_random_string(10)
+        login = generate_random_string(10)
+        password = generate_random_string(10)
+        first_name = generate_random_string(10)
 
         payload = {
             "login": login,
@@ -35,7 +33,7 @@ class Helpers:
             "firstName": first_name
         }
 
-        response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier', data=payload)
+        response = requests.post(Const.DELETE_COURIER, data=payload)
 
         if response.status_code == 201:
             login_pass.append(login)
@@ -45,7 +43,7 @@ class Helpers:
         return login_pass
 
     @allure.step('Удаляем курьера')
-    def delete_courier(self, login, password):
+    def delete_courier(login, password):
         response_post = requests.post(Const.LOGIN_COURIER, data={
             "login": login,
             "password": password,

@@ -1,13 +1,11 @@
-import allure
-import requests
-from const import Const, MessageText
-from conftest import helpers
+from const import MessageText
+from helpers import *
 
 
 class TestDeleteCourier:
     @allure.title('Удаляю курьера со всеми обязательными полями')
-    def test_delete_courier(self, helpers):
-        data = helpers.register_new_courier_and_return_login_password()
+    def test_delete_courier(self):
+        data = register_new_courier_and_return_login_password()
         response_post = requests.post(Const.LOGIN_COURIER, data={
             "login": data[0],
             "password": data[1],
@@ -20,7 +18,7 @@ class TestDeleteCourier:
 
 
     @allure.title('Удаляю курьера без id курьера')
-    def test_delete_courier_without_id(self, helpers):
+    def test_delete_courier_without_id(self):
         response_delete = requests.delete(Const.DELETE_COURIER)
         assert response_delete.status_code == 404
         assert MessageText.DELETE_COURIER_WITHOUT_ID in response_delete.text
@@ -28,8 +26,8 @@ class TestDeleteCourier:
 
 
     @allure.title('Удаляю курьера с несуществующим id курьера')
-    def test_delete_courier_fake_id(self, helpers):
-        data = helpers.register_new_courier_and_return_login_password()
+    def test_delete_courier_fake_id(self):
+        data = register_new_courier_and_return_login_password()
         response_post = requests.post(Const.LOGIN_COURIER, data={
             "login": data[0],
             "password": data[1],

@@ -1,13 +1,10 @@
-import allure
-import requests
-from const import MessageText, Const
-from conftest import helpers
-
+from const import MessageText
+from helpers import *
 
 class TestCreateCourier:
     @allure.title('Создание курьера с заполнеными обязательными полями')
-    def test_create_courier(self, helpers):
-        login, password, first_name = helpers.generate_data()
+    def test_create_courier(self):
+        login, password, first_name = generate_data()
         payload = {
             "login": login,
             "password": password,
@@ -16,12 +13,12 @@ class TestCreateCourier:
         response = requests.post(Const.CREATE_COURIER, data=payload)
         assert response.status_code == 201
         assert MessageText.CREATE_COURIER in response.text
-        helpers.delete_courier(login, password)
+        delete_courier(login, password)
 
 
     @allure.title('Проверить, что невозможно создать двух одинаковых курьеров')
-    def test_create_courier_twice(self, helpers):
-        data = helpers.register_new_courier_and_return_login_password()
+    def test_create_courier_twice(self):
+        data = register_new_courier_and_return_login_password()
         response = requests.post(Const.CREATE_COURIER, data={
             "login": data[0],
             "password": data[1],
@@ -32,8 +29,8 @@ class TestCreateCourier:
 
 
     @allure.title('Создание курьера без логина')
-    def test_create_courier_without_login(self, helpers):
-        login, password, first_name = helpers.generate_data()
+    def test_create_courier_without_login(self):
+        login, password, first_name = generate_data()
         payload = {
             "password": password,
             "firstName": first_name
@@ -45,8 +42,8 @@ class TestCreateCourier:
 
 
     @allure.title('Создание курьера без пароля')
-    def test_create_courier_without_password(self, helpers):
-        login, password, first_name = helpers.generate_data()
+    def test_create_courier_without_password(self):
+        login, password, first_name = generate_data()
         payload = {
             "login": login,
             "firstName": first_name
@@ -57,8 +54,8 @@ class TestCreateCourier:
 
 
     @allure.title('Создание курьера без имени')
-    def test_create_courier_without_first_name(self, helpers):
-        login, password, first_name = helpers.generate_data()
+    def test_create_courier_without_first_name(self):
+        login, password, first_name = generate_data()
         payload = {
             "login": login,
             "password": password,
@@ -66,4 +63,4 @@ class TestCreateCourier:
         response = requests.post(Const.CREATE_COURIER, data=payload)
         assert response.status_code == 201
         assert MessageText.CREATE_COURIER in response.text
-        helpers.delete_courier(login, password)
+        delete_courier(login, password)

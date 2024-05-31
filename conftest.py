@@ -2,12 +2,6 @@ import pytest
 import requests
 from const import Const
 from data import DataForTest
-from helpers import Helpers
-
-
-@pytest.fixture(scope='function')
-def helpers():
-    return Helpers()
 
 
 @pytest.fixture(scope='function')

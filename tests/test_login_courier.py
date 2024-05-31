@@ -1,20 +1,18 @@
-import allure
-import requests
-from const import MessageText, Const
-from conftest import helpers
+from const import MessageText
+from helpers import *
 
 
 class TestLoginCourier:
     @allure.title('Проверка на авторизацию курьера')
-    def test_login_courier(self, helpers):
-        data = helpers.register_new_courier_and_return_login_password()
+    def test_login_courier(self):
+        data = register_new_courier_and_return_login_password()
         response = requests.post(Const.LOGIN_COURIER, data={
             "login": data[0],
             "password": data[1],
         })
         assert response.status_code == 200
         assert MessageText.LOGING_COURIER in response.text
-        helpers.delete_courier(data[0], data[1])
+        delete_courier(data[0], data[1])
 
 
     @allure.title('Проверка на авторизацию курьера без логина')
@@ -29,8 +27,8 @@ class TestLoginCourier:
 
 
     @allure.title('Проверка на авторизацию курьера без пароля')
-    def test_login_courier_without_password(self, helpers):
-        data = helpers.register_new_courier_and_return_login_password()
+    def test_login_courier_without_password(self):
+        data = register_new_courier_and_return_login_password()
         response = requests.post(Const.LOGIN_COURIER, data={
             "login": '',
             "password": data[1],
@@ -40,7 +38,7 @@ class TestLoginCourier:
 
 
     @allure.title('Проверка на авторизацию курьера без логина и пароля')
-    def test_login_courier_without_data(self, helpers):
+    def test_login_courier_without_data(self):
         response = requests.post(Const.LOGIN_COURIER, data={
             "login": '',
             "password": '',
